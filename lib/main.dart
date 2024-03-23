@@ -30,7 +30,7 @@ class ReviewScreen extends StatelessWidget {
     Review(avatar: 'images/aa.jpg',name: 'Sara', reviewText: 'had a great experience!', rating: 5),
     Review(avatar: 'images/aa.jpg',name: 'Ahmad', reviewText: 'had a great experience!', rating: 4),
       Review(avatar: 'images/aa.jpg',name: 'Ahmad', reviewText: 'had a great experience!', rating: 4),
-
+//hiiii
   ];
 
   @override
