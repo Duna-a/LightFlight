@@ -1,98 +1,148 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/login.dart';
+import 'package:flutter_application_1/signUp.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: welcomPage(),
+  ));
 }
 
-class MyApp extends StatelessWidget {
+class welcomPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: ReviewScreen(),
-    );
-  }
-}
+    
+return Scaffold(
+  backgroundColor: Color(0xFFF3F9FB),
+  body: SafeArea(
+    
+    child: Container(
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height,
+      padding: EdgeInsets.symmetric(horizontal: 30,vertical: 50),
+      child: Column(
 
-class ReviewScreen extends StatelessWidget {
-  final List<Review> reviews = [
-    Review(avatar: 'images/aa.jpg',name: 'Sara', reviewText: 'had a great experience!', rating: 5),
-    Review(avatar: 'images/bb.jpg',name: 'Ahmad', reviewText: 'had a great experience!', rating: 4),
-    Review(avatar: 'images/cc.jpg',name: 'Sara', reviewText: 'had a great experience!', rating: 5),
-    Review(avatar: 'images/dd.jpg',name: 'Ahmad', reviewText: 'had a great experience!', rating: 4),
-    Review(avatar: 'images/aa.jpg',name: 'Sara', reviewText: 'had a great experience!', rating: 5),
-    Review(avatar: 'images/aa.jpg',name: 'Ahmad', reviewText: 'had a great experience!', rating: 4),
-      Review(avatar: 'images/aa.jpg',name: 'Ahmad', reviewText: 'had a great experience!', rating: 4),
-//hiiii11
-  ];
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+   
+          
+          Column(children: <Widget>[
+            SizedBox(height: 20,),
+                   Container(
+                    
+              height: MediaQuery.of(context).size.height/3,
+              decoration: BoxDecoration(
+                image:DecorationImage(image: AssetImage("images/lightFlightLogo.png"),
+                ),
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(child:Text(' Recommendations')),
-        
-        // ignore: prefer_const_constructors
-        backgroundColor: Color.fromARGB(255, 61, 114, 157),
-      ),
-      body: ListView.builder(
-        itemCount: reviews.length,
-        itemBuilder: (context, index) {
-          return ReviewCard(review: reviews[index]);
-        },
-      ),
-    );
-  }
-}
+              ),
 
-class Review {
-  final String name;
-  final String reviewText;
-  final int rating;
-  final String avatar; 
-  
-
-  Review({required this.avatar,required this.name, required this.reviewText, required this.rating});
-}
-
-class ReviewCard extends StatelessWidget {
-  final Review review;
-
-  ReviewCard({required this.review});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      //
-      child: ListTile(
-        leading: CircleAvatar(
-                backgroundImage: AssetImage(review.avatar),
-                backgroundColor: Colors.transparent,
-           ),
-        title: Text(review.name, style: TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(review.reviewText),
-            SizedBox(height: 4),
-            Row(
-              children: List.generate(5, (index) {
-                return Icon(
-                  index < review.rating ? Icons.star : Icons.star_border,
-                  color: Colors.amber,
-                );
-              }),
             ),
-          ],
-        ),
+            
+            SizedBox(height: 60,),
+                         
+            Text("Welcom to LightFlight" ,
+            style: TextStyle(
+              color: Color(0xFF096499),
+              fontWeight: FontWeight.bold,
+              fontSize: 30,
+            ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text("Where Your Journey Begins!",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.grey[700], //mayby change
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              
+
+
+            ),),
+
+
+
+
+          ],),
+
+
+     
+            Column(
+              children: <Widget>[
+                //login btn
+                MaterialButton(
+
+
+                  minWidth: double.infinity,
+                  height: 60,
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder:(context)=>loginPage()));
+                  },
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      color: Colors.black
+                    ),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: Text("Login",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+
+                  ),),
+
+                ),
+
+                //signup btn
+                SizedBox(height: 20,),
+                MaterialButton(
+                  
+                  minWidth: double.infinity,
+                  height: 60,
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder:(context)=>signupPage()));
+                  },
+                  color: Color.fromARGB(255, 104, 204, 220),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      color: Color(0xFF1BAEC6),
+                    ),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: Text("SignUp",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+
+                  ),),
+                ),
+              ],
+
+          
+            ),
+
+
+
+        ],
+
+
       ),
-    );
-  }
+      
+    
+
+    ),
+  ),
+);
+
 }
+}
+

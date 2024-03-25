@@ -65,6 +65,9 @@ flutter:
     - images/bb.jpg
     - images/cc.jpg
     - images/dd.jpg
+    - images/lightFlightLogo.png
+    - images/logImg.png
+    
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
