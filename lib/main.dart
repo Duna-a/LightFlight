@@ -11,6 +11,18 @@ void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: welcomPage(),
+    theme: ThemeData(
+        primaryColor:Color(0xFF2F83C5) ,
+        primaryColorLight: Color(0xFF1BAEC6),
+        primaryColorDark:Color(0xFF096499) ,
+        highlightColor: Color(0xFF48C4DD),
+        scaffoldBackgroundColor: Color(0xFFF3F9FB),
+        textTheme:TextTheme(
+         bodyLarge: TextStyle(color:Color(0xFF096499),fontSize: 16 ),
+         bodyMedium: TextStyle(color:Color(0xFF096499),fontSize: 14 ), 
+         bodySmall:  TextStyle(color:Color(0xFF2F83C5),fontSize: 12 ),
+        ),
+      ),
   ));
 }
 
