@@ -8,7 +8,23 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/login.dart';
 import 'package:flutter_application_1/signUp.dart';
 
-void main() {
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+    // Replace with your actual Firebase project configuration
+  final firebaseConfig = FirebaseOptions(
+    apiKey: "AIzaSyAspkUJ_FrWCRiIZ_gq8EXbAB3yNUUw7WI",
+    appId: "1:519520418458:android:377e038a9eabbf58debd23",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    projectId: "lightflight-7abd4",
+  );
+  await Firebase.initializeApp(options: firebaseConfig);
+  
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: welcomPage(),
@@ -26,6 +42,8 @@ void main() {
     ),
   ));
 }
+
+
 
 class welcomPage extends StatelessWidget{
   @override
