@@ -86,6 +86,7 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
             color: Color(0xFFF3F9FB),
           ),
         ),
+        centerTitle: true,
       ),
       body: Container(
         color: Color.fromARGB(255, 255, 255, 255),
@@ -294,7 +295,9 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
                 child: Text(
                   "Book a flight",
                   style: TextStyle(
-                    color: Theme.of(context).scaffoldBackgroundColor,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    // color: Theme.of(context).scaffoldBackgroundColor,
                   ),
                 ),
               ),

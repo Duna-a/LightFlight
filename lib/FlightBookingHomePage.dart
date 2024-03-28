@@ -227,7 +227,8 @@ class _FlightBookingHomePageState extends State<FlightBookingHomePage> {
                                           child: Text(
                                             "Search",
                                             style: TextStyle(
-                                              color: Colors.white,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600,
                                             ),
                                           ),
                                         ),

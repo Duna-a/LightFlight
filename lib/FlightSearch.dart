@@ -28,6 +28,7 @@ class FlightSearch extends StatelessWidget {
             color: Color(0xFFF3F9FB),
           ),
         ),
+        centerTitle: true,
         backgroundColor: Color(0xFF1BAEC6),
       ),
       body: SingleChildScrollView(
@@ -53,7 +54,7 @@ class FlightSearch extends StatelessWidget {
                         child: Text(
                           'All',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -75,7 +76,7 @@ class FlightSearch extends StatelessWidget {
                         child: Text(
                           'Price',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -97,7 +98,7 @@ class FlightSearch extends StatelessWidget {
                         child: Text(
                           'Recommended',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 12.2,
                           ),
                         ),
