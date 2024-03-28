@@ -4,6 +4,21 @@ import 'addNewCard.dart';
 import 'recommendations.dart';
 import 'MyFlight.dart';
 import 'FlightBookingHomePage.dart';
+import 'main.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Account(),
+    );
+  }
+}
 
 class Account extends StatelessWidget {
   @override
@@ -191,7 +206,10 @@ class Account extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.popUntil(context, ModalRoute.withName('/'));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => (welcomPage())));
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
