@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "519520418458",
+    "project_id": "lightflight-7abd4",
+    "storage_bucket": "lightflight-7abd4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519520418458:android:377e038a9eabbf58debd23",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAspkUJ_FrWCRiIZ_gq8EXbAB3yNUUw7WI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
