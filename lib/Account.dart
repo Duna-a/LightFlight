@@ -343,7 +343,7 @@ void showDeleteConfirmationDialog(BuildContext context, String cardDetails) {
                         });
                       },
                       checkColor: Colors.white,
-                      activeColor: Color(0xFF1BAEC6), // Checkbox color
+                      activeColor: Color(0xFF1BAEC6),
                     ),
                     Text(
                       cardDetails,
