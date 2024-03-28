@@ -1,5 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Account.dart';
+import 'package:flutter_application_1/FlightBookingHomePage.dart';
+import 'package:flutter_application_1/MyFlight.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,9 +37,14 @@ class ReviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Recommendations')),
+        title: Text(
+          'Recommendation',
+          style: TextStyle(
+            color: Color(0xFFF3F9FB),
+          ),
+        ),
         backgroundColor: Color(0xFF1BAEC6),
-        foregroundColor: Color(0xFFF3F9FB),
+        centerTitle: true,
       ),
       body: ListView.builder(
         itemCount: reviews.length,
@@ -52,13 +60,13 @@ class ReviewScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: GestureDetector(
-                  onTap: () {/*
+                  onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => FlightBookingHomePage(),
                       ),
                     );
-                  */},
+                  },
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Row(
@@ -75,13 +83,13 @@ class ReviewScreen extends StatelessWidget {
               ),
               Expanded(
                 child: GestureDetector(
-                  onTap: () {/*
+                  onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => MyFlight(),
                       ),
                     );
-                  */},
+                  },
                   child: Icon(
                     Icons.airplane_ticket,
                     color: Colors.grey,
@@ -90,13 +98,13 @@ class ReviewScreen extends StatelessWidget {
               ),
               Expanded(
                 child: GestureDetector(
-                  onTap: () {/*
+                  onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => ReviewScreen(),
+                        builder: (context) => MyApp(),
                       ),
                     );
-                  */},
+                  },
                   child: Icon(
                     Icons.star,
                     color: Color(0xFF096499),
@@ -105,13 +113,13 @@ class ReviewScreen extends StatelessWidget {
               ),
               Expanded(
                 child: GestureDetector(
-                  onTap: () {/*
+                  onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => Account(),
                       ),
                     );
-                  */},
+                  },
                   child: Icon(
                     Icons.person_outline,
                     color: Colors.grey,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/FlightBookingHomePage.dart';
 
 class signupPage extends StatelessWidget{
   @override
@@ -68,6 +69,7 @@ class signupPage extends StatelessWidget{
                   minWidth: double.infinity,
                   height: 60,
                   onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder:(context)=>FlightBookingHomePage()));
                   },
                   elevation: 0,
                    color: Color.fromARGB(255, 104, 204, 220),
