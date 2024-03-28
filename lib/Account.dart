@@ -317,7 +317,7 @@ class Account extends StatelessWidget {
 }
 
 void showDeleteConfirmationDialog(BuildContext context, String cardDetails) {
-  bool isChecked = false; // Initial checkbox state
+  bool isChecked = false;
 
   showDialog(
     context: context,
