@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_application_1/FlightBookingHomePage.dart';
-// import 'package:flutter_application_1/FlightBookingSelectPage.dart';
+import 'package:flutter_application_1/FlightBookingSelectPage.dart';
 
 class FlightSearch extends StatelessWidget {
   const FlightSearch({Key? key}) : super(key: key);
@@ -159,7 +158,7 @@ class FlightSearch extends StatelessWidget {
       child: Column(
         children: [
           Image.asset(
-            'assets/flynas.png',
+            'images/flynas.png',
             height: 42,
             width: 100,
             fit: BoxFit.cover,
@@ -203,34 +202,34 @@ class FlightSearch extends StatelessWidget {
                 price,
               ),
               Spacer(),
-              // GestureDetector(
-              //   onTap: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) => FlightBookingHomePage(),
-              //       ),
-              //     );
-              //   },
-              //   child: Container(
-              //     decoration: BoxDecoration(
-              //       color: Colors.blue[100],
-              //       borderRadius: BorderRadius.circular(4),
-              //     ),
-              //     padding: const EdgeInsets.symmetric(
-              //       horizontal: 12,
-              //       vertical: 4,
-              //     ),
-              //     child: const Center(
-              //       child: Text(
-              //         "Select",
-              //         style: TextStyle(
-              //           color: Color(0xFF1BAEC6),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // )
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FlightBookingSelectPage(),
+                    ),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue[100],
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
+                  child: const Center(
+                    child: Text(
+                      "Select",
+                      style: TextStyle(
+                        color: Color(0xFF1BAEC6),
+                      ),
+                    ),
+                  ),
+                ),
+              )
             ],
           )
         ],

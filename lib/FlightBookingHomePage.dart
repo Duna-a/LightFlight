@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Account.dart';
 import 'package:flutter_application_1/FlightSearch.dart';
 import 'package:flutter_application_1/MyFlight.dart';
 
@@ -281,7 +282,7 @@ class _FlightBookingHomePageState extends State<FlightBookingHomePage> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => FlightSearch(),
+                        builder: (context) => MyFlight(),
                       ),
                     );
                   },
@@ -296,7 +297,7 @@ class _FlightBookingHomePageState extends State<FlightBookingHomePage> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => FlightSearch(),
+                        builder: (context) => Account(),
                       ),
                     );
                   },
