@@ -3,6 +3,20 @@ import 'Account.dart';
 import 'recommendations.dart';
 import 'FlightBookingHomePage.dart';
 
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyFlight(),
+    );
+  }
+}
+
 class MyFlight extends StatefulWidget {
   @override
   _ExpansionListState createState() => _ExpansionListState();
@@ -50,7 +64,6 @@ class _ExpansionListState extends State<MyFlight> {
       'departureDate': '01/10/2024',
       'bookingClass': 'First class',
     },
-
   ];
 
   @override
@@ -60,7 +73,7 @@ class _ExpansionListState extends State<MyFlight> {
     return Scaffold(
       appBar: AppBar(
         title: Text("View flights",style:TextStyle(color: Theme.of(context).scaffoldBackgroundColor)),
-        backgroundColor: Theme.of(context).primaryColorLight,
+        backgroundColor: Color(0xFF1BAEC6),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -75,7 +88,6 @@ class _ExpansionListState extends State<MyFlight> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("From:",style: Theme.of(context).textTheme.bodyLarge, ),
-
                         Text( item.destination,style: Theme.of(context).textTheme.bodyMedium,),
                       ],
                     ),
@@ -85,7 +97,6 @@ class _ExpansionListState extends State<MyFlight> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text( "To:", style: Theme.of(context).textTheme.bodyLarge, ),
-
                           Text(item.departure,style: Theme.of(context).textTheme.bodyMedium,),
                         ],
                       ),
@@ -100,37 +111,21 @@ class _ExpansionListState extends State<MyFlight> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Departure Date:",style: Theme.of(context).textTheme.bodyMedium,),
-
                       Text( item.departureDate,style: Theme.of(context).textTheme.bodySmall, ),
-
                       Text("Departure time:",style: Theme.of(context).textTheme.bodyMedium, ),
-
                       Text(item.departureTime,style: Theme.of(context).textTheme.bodySmall,),
-
                       Text("Arrival time:",style: Theme.of(context).textTheme.bodyMedium, ),
-
                       Text(item.arrivalTime,style: Theme.of(context).textTheme.bodySmall,),
-
                       Text("Booking Class:",style: Theme.of(context).textTheme.bodyMedium, ),
-
                       Text(item.bookingClass, style: Theme.of(context).textTheme.bodySmall, ),
-
                       Text("Seat number:",style: Theme.of(context).textTheme.bodyMedium,),
-
                       Text(item.seatNum, style: Theme.of(context).textTheme.bodySmall,),
-
                       Text( "Concierge Services:",style: Theme.of(context).textTheme.bodyMedium, ),
-
                       Text("Restaurant:", style: Theme.of(context).textTheme.bodyMedium,),
-
                       Text( "Pink Mamma", style: Theme.of(context).textTheme.bodySmall, ),
-
                       Text("Car Rental:",style: Theme.of(context).textTheme.bodyMedium, ),
-
                       Text( "rentalCars",style: Theme.of(context).textTheme.bodySmall,),
-
                       Text("Tourist Spot:",style: Theme.of(context).textTheme.bodyMedium, ),
-
                       Text("Palace of Versailles",style: Theme.of(context).textTheme.bodySmall, ),
                     ],
                   ),
@@ -191,7 +186,7 @@ class _ExpansionListState extends State<MyFlight> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => MyApp(),
+                        builder: (context) =>ReviewScreen(),
                       ),
                     );
                   },
@@ -247,7 +242,7 @@ class Item {
   });
 }
 
-List<Item> generateItems(List<Map<String, String>> itemData) {
+List<Item> generateItems(List<Map<String,String>> itemData) {
   return itemData.map((item) {
     return Item(
       logo: item['logo'] ?? '',
@@ -261,3 +256,4 @@ List<Item> generateItems(List<Map<String, String>> itemData) {
     );
   }).toList();
 }
+

@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/MyFlight.dart';
 import 'package:flutter_application_1/login.dart';
 import 'package:flutter_application_1/signUp.dart';
 
@@ -27,7 +28,7 @@ Future<void> main() async {
   
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: welcomPage(),
+    home: MyFlight(),
     theme: ThemeData(
       primaryColor: Color(0xFF2F83C5),
       primaryColorLight: Color(0xFF1BAEC6),
@@ -39,6 +40,7 @@ Future<void> main() async {
         bodyMedium: TextStyle(color: Color(0xFF096499), fontSize: 14),
         bodySmall: TextStyle(color: Color(0xFF2F83C5), fontSize: 12),
       ),
+      visualDensity: VisualDensity.adaptivePlatformDensity,
     ),
   ));
 }

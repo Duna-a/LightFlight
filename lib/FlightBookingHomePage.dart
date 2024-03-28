@@ -283,7 +283,7 @@ class _FlightBookingHomePageState extends State<FlightBookingHomePage> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => MyApp(),
+                        builder: (context) => ReviewScreen(),
                       ),
                     );
                   },
