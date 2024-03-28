@@ -342,8 +342,8 @@ void showDeleteConfirmationDialog(BuildContext context, String cardDetails) {
                           isChecked = value!;
                         });
                       },
-                      checkColor: Colors.white,
-                      activeColor: Color(0xFF1BAEC6),
+                      checkColor: Color(0xFF1BAEC6),
+                      activeColor: Color(0xFF096499),
                     ),
                     Text(
                       cardDetails,
