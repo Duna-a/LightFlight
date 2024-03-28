@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Account.dart';
 import 'package:flutter_application_1/FlightSearch.dart';
 import 'package:flutter_application_1/MyFlight.dart';
+import 'recommendations.dart';
 
 class FlightBookingHomePage extends StatefulWidget {
   const FlightBookingHomePage({Key? key}) : super(key: key);
@@ -282,7 +283,7 @@ class _FlightBookingHomePageState extends State<FlightBookingHomePage> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => MyFlight(),
+                        builder: (context) => MyApp(),
                       ),
                     );
                   },
