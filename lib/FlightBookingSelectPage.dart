@@ -3,6 +3,20 @@ import 'package:flutter_application_1/FlightBookingHomePage.dart';
 import 'checboxstate.dart';
 import 'package:flutter_application_1/flight_data.dart';
 
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: FlightBookingSelectPage(),
+    );
+  }
+}
+
 class FlightBookingSelectPage extends StatefulWidget {
   const FlightBookingSelectPage({Key? key}) : super(key: key);
 

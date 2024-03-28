@@ -4,6 +4,20 @@ import 'package:flutter_application_1/FlightSearch.dart';
 import 'package:flutter_application_1/MyFlight.dart';
 import 'recommendations.dart';
 
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: FlightBookingHomePage(),
+    );
+  }
+}
+
 class FlightBookingHomePage extends StatefulWidget {
   const FlightBookingHomePage({Key? key}) : super(key: key);
 
