@@ -209,78 +209,86 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => AlertDialog(
-                      contentPadding: EdgeInsets.all(10),
-                      content: SizedBox(
-                        width: MediaQuery.of(context).size.width * 80,
-                        height: MediaQuery.of(context).size.height * 60,
-                        child: DefaultTabController(
-                          length: 3,
-                          child: Scaffold(
-                            appBar: AppBar(
-                              bottom: TabBar(
-                                indicatorColor:
-                                    Theme.of(context).primaryColorDark,
-                                labelStyle:
-                                    Theme.of(context).textTheme.bodyMedium,
-                                unselectedLabelColor:
-                                    Theme.of(context).primaryColorLight,
-                                tabs: const [
-                                  Tab(text: "Diner"),
-                                  Tab(text: "Car rental"),
-                                  Tab(text: "attraction"),
+                    builder: (context) => StatefulBuilder(
+                      builder: (context, setStateInsideDialog) => AlertDialog(
+                        contentPadding: EdgeInsets.all(10),
+                        content: SizedBox(
+                          width: MediaQuery.of(context).size.width * 80,
+                          height: MediaQuery.of(context).size.height * 60,
+                          child: DefaultTabController(
+                            length: 3,
+                            child: Scaffold(
+                              appBar: AppBar(
+                                bottom: TabBar(
+                                  indicatorColor:
+                                      Theme.of(context).primaryColorDark,
+                                  labelStyle:
+                                      Theme.of(context).textTheme.bodyMedium,
+                                  unselectedLabelColor:
+                                      Theme.of(context).primaryColorLight,
+                                  tabs: const [
+                                    Tab(text: "Diner"),
+                                    Tab(text: "Car rental"),
+                                    Tab(text: "attraction"),
+                                  ],
+                                ),
+                                title: Text(
+                                  'Concierge services',
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                ),
+                              ),
+                              body: TabBarView(
+                                children: [
+                                  SingleChildScrollView(
+                                    child: Column(
+                                      children: services
+                                          .map((checkbox) =>
+                                              buildingSingleCheckbox(
+                                                  checkbox,
+                                                  setStateInsideDialog))
+                                          .toList(),
+                                    ),
+                                  ),
+                                  SingleChildScrollView(
+                                    child: Column(
+                                      children: services2
+                                          .map((checkbox) =>
+                                              buildingSingleCheckbox(
+                                                  checkbox,
+                                                  setStateInsideDialog))
+                                          .toList(),
+                                    ),
+                                  ),
+                                  SingleChildScrollView(
+                                    child: Column(
+                                      children: services3
+                                          .map((checkbox) =>
+                                              buildingSingleCheckbox(
+                                                  checkbox,
+                                                  setStateInsideDialog))
+                                          .toList(),
+                                    ),
+                                  ),
                                 ],
                               ),
-                              title: Text(
-                                'Concierge services',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                            body: TabBarView(
-                              children: [
-                                SingleChildScrollView(
-                                  child: Column(
-                                    children: services
-                                        .map((checkbox) =>
-                                            buildingSingleCheckbox(checkbox))
-                                        .toList(),
-                                  ),
-                                ),
-                                SingleChildScrollView(
-                                  child: Column(
-                                    children: services2
-                                        .map((checkbox) =>
-                                            buildingSingleCheckbox(checkbox))
-                                        .toList(),
-                                  ),
-                                ),
-                                SingleChildScrollView(
-                                  child: Column(
-                                    children: services3
-                                        .map((checkbox) =>
-                                            buildingSingleCheckbox(checkbox))
-                                        .toList(),
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
                         ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => FlightBookingHomePage(),
+                                ),
+                              );
+                            },
+                            child: Text('Next',
+                                style: Theme.of(context).textTheme.bodyLarge),
+                          ),
+                        ],
                       ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => FlightBookingHomePage(),
-                              ),
-                            );
-                          },
-                          child: Text('Next',
-                              style: Theme.of(context).textTheme.bodyLarge),
-                        ),
-                      ],
                     ),
                   );
                 },
@@ -308,14 +316,14 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
     );
   }
 
-  Widget buildingSingleCheckbox(checkboxState checkbox) => CheckboxListTile(
+  Widget buildingSingleCheckbox(checkboxState checkbox, Function setStateInsideDialog) => CheckboxListTile(
         title: Text(
           checkbox.title,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         value: checkbox.value,
         onChanged: (value) {
-          setState(() {
+          setStateInsideDialog(() {
             checkbox.value = value!;
           });
         },
