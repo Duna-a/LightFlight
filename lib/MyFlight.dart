@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'Account.dart';
+import 'recommendations.dart';
+import 'FlightBookingHomePage.dart';
 
 class MyFlight extends StatefulWidget {
   @override
@@ -8,7 +11,7 @@ class MyFlight extends StatefulWidget {
 class _ExpansionListState extends State<MyFlight> {
   final List<Map<String, String>> itemData = [
     {
-      'logo': 'lib/assets/saudia.png',
+      'logo': 'images/saudia.png',
       'destination': 'Riyadh',
       'departure': 'France',
       'departureTime':'9:30PM',
@@ -18,7 +21,7 @@ class _ExpansionListState extends State<MyFlight> {
       'bookingClass': 'Business',
     },
     {
-      'logo': 'lib/assets/flynas.png',
+      'logo': 'images/flynas.png',
       'destination': 'Dubai',
       'departure': 'Cairo',
       'departureTime':'9:00AM',
@@ -28,7 +31,7 @@ class _ExpansionListState extends State<MyFlight> {
       'bookingClass': 'Economy',
     },
     {
-      'logo': 'lib/assets/gulf.png',
+      'logo': 'images/gulf.png',
       'destination': 'Riyadh',
       'departure': 'London',
       'departureTime':'7:00PM',
@@ -38,7 +41,7 @@ class _ExpansionListState extends State<MyFlight> {
       'bookingClass': 'Premium economy',
     },
     {
-      'logo': 'lib/assets/kuwait.jpeg',
+      'logo': 'images/kuwait.jpeg',
       'destination': 'Kuwait',
       'departure': 'Paris',
       'departureTime':'6:30AM',
@@ -148,11 +151,11 @@ class _ExpansionListState extends State<MyFlight> {
               Expanded(
                 child: GestureDetector(
                   onTap: () {
-                    /*Navigator.of(context).push(
+                    Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => FlightBookingHomePage(),
                       ),
-                    );*/
+                    );
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
@@ -171,11 +174,11 @@ class _ExpansionListState extends State<MyFlight> {
               Expanded(
                 child: GestureDetector(
                   onTap: () {
-                    /* Navigator.of(context).push(
+                    Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => MyFlight(),
                       ),
-                    );*/
+                    );
                   },
                   child: Icon(
                     Icons.airplane_ticket,
@@ -186,11 +189,11 @@ class _ExpansionListState extends State<MyFlight> {
               Expanded(
                 child: GestureDetector(
                   onTap: () {
-                    /*Navigator.of(context).push(
+                    Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => Recommendation(),
+                        builder: (context) => MyApp(),
                       ),
-                    );*/
+                    );
                   },
                   child: Icon(
                     Icons.star,
@@ -201,11 +204,11 @@ class _ExpansionListState extends State<MyFlight> {
               Expanded(
                 child: GestureDetector(
                   onTap: () {
-                    /* Navigator.of(context).push(
+                    Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => Account(),
                       ),
-                    );*/
+                    );
                   },
                   child: Icon(
                     Icons.person_outline,

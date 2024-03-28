@@ -1,10 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/FlightBookingHomePage.dart';
-
+import 'checboxstate.dart';
 import 'package:flutter_application_1/flight_data.dart';
 
-class FlightBookingSelectPage extends StatelessWidget {
+class FlightBookingSelectPage extends StatefulWidget {
   const FlightBookingSelectPage({Key? key}) : super(key: key);
+
+  @override
+  _FlightBookingSelectPageState createState() =>
+      _FlightBookingSelectPageState();
+}
+
+
+class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
+
+var services = [
+    checkboxState(title: 'Le Petit Chef', Description: 'Webpage: https://lepetitchef.com/le-meridien-paris?lang=EN'),
+    checkboxState(title: 'Pink Mamma', Description: 'Webpage: https://www.bigmammagroup.com/en/trattorias/pink-mamma'),
+    checkboxState(title: 'Le Train Bleu', Description: 'Webpage: https://www.le-train-bleu.com/en/'),
+    checkboxState(title: 'Andia', Description: 'Webpage: https://www.andia-restaurant.com/'),
+  ];
+
+    var services2 = [
+    checkboxState(title: 'rentalCars', Description: 'Webpage:https://www.rentalcars.com/en/country/fr'),
+    checkboxState(title: 'Europcar', Description: 'Webpage:https://www.europcar.com/en/car-rental/locations/france'),
+    checkboxState(title: 'Cars Scanner', Description: 'Webpage:https://www.rentalcars.com/car-rental/france'),
+    checkboxState(title: 'Kayak', Description: 'Webpage:https://www.kayak.com/France-Car-Rentals.82.crc.html'),
+  ];
+
+ var services3 = [
+    checkboxState(title: 'Eiffel Tower', Description: 'Webpage:https://www.toureiffel.paris/fr'),
+    checkboxState(title: 'Arc de Triomphe', Description: 'Webpage:https://www.paris-arc-de-triomphe.fr/'),
+    checkboxState(title: 'Palace of Versailles', Description: 'Webpage:https://www.chateauversailles.fr/'),
+    checkboxState(title: 'Mémorial De Caen', Description: 'Webpage:https://www.memorial-caen.fr/'),
+  ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -135,26 +165,101 @@ class FlightBookingSelectPage extends StatelessWidget {
                   ),
                 );
               },
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                decoration: BoxDecoration(
-                  color: Color(0xFF1BAEC6),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Center(
-                  child: Text(
-                    "Book A Flight",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                        child: ElevatedButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                contentPadding: EdgeInsets.all(10), 
+                content: SizedBox(
+                  width: MediaQuery.of(context).size.width * 80, 
+                  height: MediaQuery.of(context).size.height * 60, 
+                  child: DefaultTabController(
+                    length: 3,
+                    child: Scaffold(
+                      appBar: AppBar(
+                        bottom: TabBar(
+                          indicatorColor: Theme.of(context).primaryColorDark,
+                          labelStyle: Theme.of(context).textTheme.bodyMedium,
+                          unselectedLabelColor: Theme.of(context).primaryColorLight,
+                          tabs: const [
+                            Tab(text: "Diner"),
+                            Tab(text: "Car rental"),
+                            Tab(text: "attraction"),
+                          ],
+                        ),
+                        title: Text('Concierge services',style: Theme.of(context).textTheme.bodyLarge,),
+                      ),
+                      body: TabBarView(
+                        children: [
+                          SingleChildScrollView(
+                            child: Column(
+                              children: services
+                                  .map((checkbox) =>
+                                      buildingSingleCheckbox(checkbox))
+                                  .toList(),
+                            ),
+                          ),
+                          SingleChildScrollView(
+                            child: Column(
+                              children: services2
+                                  .map((checkbox) =>
+                                      buildingSingleCheckbox(checkbox))
+                                  .toList(),
+                            ),
+                          ),
+                          SingleChildScrollView(
+                            child: Column(
+                              children: services3
+                                  .map((checkbox) =>
+                                      buildingSingleCheckbox(checkbox))
+                                  .toList(),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
+                actions: [
+                  TextButton(
+                    onPressed: () { Navigator.pop(context);
+                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => FlightBookingHomePage(),),);
+                    },
+                    child: Text('Next',style:Theme.of(context).textTheme.bodyLarge),
+                  ),
+                ],
               ),
+            );
+          },
+          style:ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            backgroundColor: Color(0xFF1BAEC6),
+            shape:RoundedRectangleBorder( borderRadius: BorderRadius.circular(12),),
+          ),
+          child: Text("Book a flight",style:TextStyle(color:Theme.of(context).scaffoldBackgroundColor,),),
+        ),
+              
             )
           ],
         ),
       ),
     );
   }
+
+Widget buildingSingleCheckbox(checkboxState checkbox) => CheckboxListTile(
+        title: Text(checkbox.title,style: Theme.of(context).textTheme.bodyMedium,),
+        value: checkbox.value,
+        onChanged: (value) {
+          setState(() {
+            checkbox.value = value!;
+          });
+        },
+        activeColor: Theme.of(context).primaryColorDark,
+        checkColor: Theme.of(context).primaryColorLight,
+        subtitle: Text(checkbox.Description,style: Theme.of(context).textTheme.bodySmall,),
+        controlAffinity: ListTileControlAffinity.leading,
+      );
+
 }
+
