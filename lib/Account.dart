@@ -188,7 +188,9 @@ class Account extends StatelessWidget {
                 MaterialButton(
                   minWidth: 100,
                   height: 40,
-                  onPressed: () {},
+                  onPressed: () {
+                    showDeleteConfirmationDialog(context, 'Ruba Ahmad - 9906');
+                  },
                   shape: RoundedRectangleBorder(
                     side: BorderSide(color: Colors.black),
                     borderRadius: BorderRadius.circular(50),
@@ -312,4 +314,82 @@ class Account extends StatelessWidget {
       ),
     );
   }
+}
+
+void showDeleteConfirmationDialog(BuildContext context, String cardDetails) {
+  bool isChecked = false; // Initial checkbox state
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Color(0xFFF3F9FB),
+        title: Text('Delete Card'),
+        content: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Are you sure you want to delete the following card?'),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: isChecked,
+                      onChanged: (value) {
+                        setState(() {
+                          isChecked = value!;
+                        });
+                      },
+                      checkColor: Colors.white,
+                      activeColor: Color(0xFF1BAEC6), // Checkbox color
+                    ),
+                    Text(
+                      cardDetails,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.white),
+              side: MaterialStateProperty.all(BorderSide(color: Colors.black)),
+            ),
+            child: Text(
+              "Cancel",
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (isChecked) {
+              } else {}
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.red),
+            ),
+            child: Text(
+              "Delete",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ],
+      );
+    },
+  );
 }
