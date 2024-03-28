@@ -27,7 +27,7 @@ class signupPage extends StatelessWidget{
           Column(    
             children: <Widget>[     
               Text("Sign Up" , style: TextStyle(
-                fontSize: 30, fontWeight: FontWeight.bold,),
+                fontSize: 30, fontWeight: FontWeight.bold,color: Colors.black),
               ),
                     SizedBox(
                       height: 20,),
@@ -79,6 +79,7 @@ class signupPage extends StatelessWidget{
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
+                    
 
                   ),),
       
@@ -89,10 +90,11 @@ class signupPage extends StatelessWidget{
 
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text("Already have an account?"),
+                    Text("Already have an account?" ,style: TextStyle(color: Colors.black),),
                     Text(" Log in" , style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
+                      color: Colors.black
                     ),),
                     SizedBox(height: 100,)
 

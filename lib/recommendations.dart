@@ -1,7 +1,5 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +12,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: ReviewScreen(),
@@ -24,32 +21,106 @@ class MyApp extends StatelessWidget {
 
 class ReviewScreen extends StatelessWidget {
   final List<Review> reviews = [
-    Review(avatar: 'images/aa.jpg',name: 'Sara', reviewText: 'had a great experience!', rating: 4),
-    Review(avatar: 'images/bb.jpg',name: 'Ahmad', reviewText: "The best airline 💛", rating: 5),
-    Review(avatar: 'images/cc.jpg',name: 'Noura', reviewText: "Great staff and services !", rating: 4),
-    Review(avatar: 'images/dd.jpg',name: 'Abdullah', reviewText: "Everything was great 😍", rating: 5),
-    Review(avatar: 'images/aa.jpg',name: 'Sarah', reviewText: "The service was slow ", rating: 2),
-    Review(avatar: 'images/bb.jpg',name: 'Khaled', reviewText: 'had a great experience!', rating: 4),
-      Review(avatar: 'images/cc.jpg',name: 'Maha', reviewText: "Everything was great 😍", rating: 5),
-//hiiii11
+    Review(avatar: 'images/aa.jpg', name: 'Sara', reviewText: 'had a great experience!', rating: 4),
+    Review(avatar: 'images/bb.jpg', name: 'Ahmad', reviewText: "The best airline 💛", rating: 5),
+    Review(avatar: 'images/cc.jpg', name: 'Noura', reviewText: "Great staff and services !", rating: 4),
+    Review(avatar: 'images/dd.jpg', name: 'Abdullah', reviewText: "Everything was great 😍", rating: 5),
+    Review(avatar: 'images/aa.jpg', name: 'Sarah', reviewText: "The service was slow ", rating: 2),
+    Review(avatar: 'images/bb.jpg', name: 'Khaled', reviewText: 'had a great experience!', rating: 4),
+    Review(avatar: 'images/cc.jpg', name: 'Maha', reviewText: "Everything was great 😍", rating: 5),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        
-        title: Center(child:Text(' Recommendations')),
-         backgroundColor:  Color(0xFF1BAEC6),
-        
-        // ignore: prefer_const_constructors
-       
+        title: Center(child: Text('Recommendations')),
+        backgroundColor: Color(0xFF1BAEC6),
+        foregroundColor: Color(0xFFF3F9FB),
       ),
       body: ListView.builder(
         itemCount: reviews.length,
         itemBuilder: (context, index) {
           return ReviewCard(review: reviews[index]);
         },
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          height: 80,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {/*
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => FlightBookingHomePage(),
+                      ),
+                    );
+                  */},
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.home_filled,
+                          color: Colors.grey,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {/*
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => MyFlight(),
+                      ),
+                    );
+                  */},
+                  child: Icon(
+                    Icons.airplane_ticket,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {/*
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ReviewScreen(),
+                      ),
+                    );
+                  */},
+                  child: Icon(
+                    Icons.star,
+                    color: Color(0xFF096499),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {/*
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => Account(),
+                      ),
+                    );
+                  */},
+                  child: Icon(
+                    Icons.person_outline,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -59,10 +130,9 @@ class Review {
   final String name;
   final String reviewText;
   final int rating;
-  final String avatar; 
-  
+  final String avatar;
 
-  Review({required this.avatar,required this.name, required this.reviewText, required this.rating});
+  Review({required this.avatar, required this.name, required this.reviewText, required this.rating});
 }
 
 class ReviewCard extends StatelessWidget {
@@ -73,12 +143,11 @@ class ReviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      //
       child: ListTile(
         leading: CircleAvatar(
-                backgroundImage: AssetImage(review.avatar),
-                backgroundColor: Colors.transparent,
-           ),
+          backgroundImage: AssetImage(review.avatar),
+          backgroundColor: Colors.transparent,
+        ),
         title: Text(review.name, style: TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,3 +168,5 @@ class ReviewCard extends StatelessWidget {
     );
   }
 }
+
+
