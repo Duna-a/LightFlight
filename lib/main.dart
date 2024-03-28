@@ -40,6 +40,12 @@ Future<void> main() async {
       ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
     ),
+      routes: {
+    
+    '/login': (context) => loginPage(),
+    '/signup': (context) => signupPage(),
+    // Define other routes here
+  },
   ));
 }
 

@@ -88,20 +88,25 @@ class signupPage extends StatelessWidget{
 
                 ),
         ),
-                Row(
+    Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: <Widget>[
+    Text("Already have an account?", style: TextStyle(color: Colors.black),),
+InkWell(
+  onTap: () {
+    // Navigate to the login page
+    Navigator.of(context).pushNamed('/login');
+  },
+  child: Text(" Log in", style: TextStyle(
+    fontWeight: FontWeight.w600,
+    fontSize: 18,
+    color: Color(0xFF1BAEC6),
+  )),
+),
+    SizedBox(height: 100,)
+  ],
+),
 
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Already have an account?" ,style: TextStyle(color: Colors.black),),
-                    Text(" Log in" , style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: Colors.black
-                    ),),
-                    SizedBox(height: 100,)
-
-                  ],
-                ),
                   ],
         ),
 

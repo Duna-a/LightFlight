@@ -88,12 +88,17 @@ class loginPage extends StatelessWidget{
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text("Don't have an account?" ,style: TextStyle(color: Colors.black),),
-                    Text(" Sign up" , style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: Colors.black,
-                      
-                    ),),
+                 InkWell(
+  onTap: () {
+    // Navigate to the login page
+    Navigator.of(context).pushNamed('/signup');
+  },
+  child: Text(" Sign Up", style: TextStyle(
+    fontWeight: FontWeight.w600,
+    fontSize: 18,
+    color: Color(0xFF1BAEC6),
+  )),
+),
 
                   ],
                 ),
