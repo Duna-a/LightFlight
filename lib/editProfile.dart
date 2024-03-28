@@ -95,7 +95,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    //add
+                    Navigator.pop(context);
                   },
                   child: Text("Save",
                       style: TextStyle(

@@ -375,6 +375,7 @@ void showDeleteConfirmationDialog(BuildContext context, String cardDetails) {
           ElevatedButton(
             onPressed: () {
               if (isChecked) {
+                Navigator.pop(context);
               } else {}
             },
             style: ButtonStyle(
