@@ -10,6 +10,7 @@ import 'package:flutter_application_1/signUp.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -23,6 +24,10 @@ Future<void> main() async {
     projectId: "lightflight-7abd4",
   );
   await Firebase.initializeApp(options: firebaseConfig);
+
+  //firebase
+
+
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -43,7 +48,7 @@ Future<void> main() async {
       routes: {
     
     '/login': (context) => loginPage(),
-    '/signup': (context) => signupPage(),
+    '/signup': (context) => SignupPage(),
     // Define other routes here
   },
   ));
@@ -135,7 +140,7 @@ class welcomPage extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => signupPage()));
+                              builder: (context) => SignupPage()));
                     },
                     color: Color.fromARGB(255, 104, 204, 220),
                     shape: RoundedRectangleBorder(
