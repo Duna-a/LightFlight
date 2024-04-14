@@ -27,6 +27,8 @@ class _ExpansionListState extends State<MyFlight> {
   String myEmail = '';
   late List<Item> _data;
   bool _isLoading = true;
+  
+  
 
   @override
   void initState() {
@@ -79,6 +81,7 @@ class _ExpansionListState extends State<MyFlight> {
 
 
             Item item = Item(
+              reservationID: reservationDoc.id,
               logo: 'images/'+ (airlineDoc.data()?['logo'] ?? ''),
               destination: availableFlightDoc.data()?['Destenation'] ?? '',
               departure: availableFlightDoc.data()?['Departure'] ?? '',
@@ -177,9 +180,48 @@ class _ExpansionListState extends State<MyFlight> {
                         Text("Palace of Versailles", style: Theme.of(context).textTheme.bodySmall),
                       ],
                     ),
-                    trailing: Icon(Icons.delete),
+         trailing: IconButton(
+      onPressed: () {
+       // Show dialog to confirm deletion
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Confirm Delete"),
+        content: Text("Are you sure you want to delete this item?"),
+        actions: <Widget>[
+          TextButton(
+            child: Text("Cancel"),
+            onPressed: () {
+              Navigator.of(context).pop(); // Dismiss the dialog
+            },
+          ),
+          TextButton(
+            child: Text("Delete"),
+            onPressed: () async {
+              // Delete the document from Firestore
+              await FirebaseFirestore.instance.collection('Reservation').doc(item.reservationID).delete();
+
+              // Use setState to remove the item from the local list and refresh the UI
+              setState(() {
+                _data.removeWhere((currentItem) => currentItem.reservationID == item.reservationID);
+              });
+
+              Navigator.of(context).pop(); // Dismiss the dialog
+            },
+          ),
+        ],
+      );
+    },
+  );
+},
+           icon: Icon(Icons.delete),
+              ),
+                    
+                 
                   ),
                 ],
+                
                 initiallyExpanded: item.isExpanded,
               );
             }).toList(),
@@ -278,6 +320,8 @@ class Item {
   String departureDate;
   String bookingClass;
   bool isExpanded;
+  String reservationID;
+ 
   Item({
     required this.logo,
     required this.destination,
@@ -287,6 +331,8 @@ class Item {
     required this.seatNum,
     required this.departureDate,
     required this.bookingClass,
-    this.isExpanded = false,
+    required this.reservationID,
+    this.isExpanded = false, 
+   
   });
 }
