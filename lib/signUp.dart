@@ -25,7 +25,8 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   void registerUser() async {
-    if (_formKey.currentState!.validate()) { // Validates the form
+    if (_formKey.currentState!.validate()) {
+      // Validates the form
       String resp = await AuthMethods().registerUser(
         email: _emailController.text,
         name: _nameController.text,
@@ -34,13 +35,13 @@ class _SignupPageState extends State<SignupPage> {
       );
       if (resp == 'success') {
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => FlightBookingHomePage()),
+          MaterialPageRoute(
+              builder: (context) => FlightBookingHomePage.noParams()),
         );
       } else {
         // Handle registration failure
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registration Failed: $resp'))
-        );
+            SnackBar(content: Text('Registration Failed: $resp')));
       }
     }
   }
@@ -66,27 +67,46 @@ class _SignupPageState extends State<SignupPage> {
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    Text("Sign Up", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black)),
+                    Text("Sign Up",
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black)),
                     SizedBox(height: 20),
-                    Text("Sign up to your account", style: TextStyle(fontSize: 15, color: Colors.grey[700])),
+                    Text("Sign up to your account",
+                        style:
+                            TextStyle(fontSize: 15, color: Colors.grey[700])),
                   ],
                 ),
                 Column(
                   children: <Widget>[
                     inputFile(label: "Name:", controller: _nameController),
-                    inputFile(label: "Email:", controller: _emailController, validator: (value) {
-                      if (value == null || value.isEmpty || !value.contains('@')) {
-                        return 'Please enter a valid email';
-                      }
-                      return null;
-                    }),
-                    inputFile(label: "Password:", obsecureText: true, controller: _passwordController, validator: (value) {
-                      if (value == null || value.isEmpty || value.length < 6) {
-                        return 'Password must be at least 6 characters long';
-                      }
-                      return null;
-                    }),
-                    inputFile(label: "Card Number:", controller: _cardNumberController),
+                    inputFile(
+                        label: "Email:",
+                        controller: _emailController,
+                        validator: (value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              !value.contains('@')) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        }),
+                    inputFile(
+                        label: "Password:",
+                        obsecureText: true,
+                        controller: _passwordController,
+                        validator: (value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              value.length < 6) {
+                            return 'Password must be at least 6 characters long';
+                          }
+                          return null;
+                        }),
+                    inputFile(
+                        label: "Card Number:",
+                        controller: _cardNumberController),
                   ],
                 ),
                 Container(
@@ -96,19 +116,27 @@ class _SignupPageState extends State<SignupPage> {
                     height: 60,
                     onPressed: registerUser,
                     color: Color.fromARGB(255, 104, 204, 220),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-                    child: Text("Sign Up", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Text("Sign Up",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 18)),
                   ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text("Already have an account?", style: TextStyle(color: Colors.black)),
+                    Text("Already have an account?",
+                        style: TextStyle(color: Colors.black)),
                     InkWell(
                       onTap: () {
                         Navigator.of(context).pushNamed('/login');
                       },
-                      child: Text(" Log in", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18, color: Color(0xFF1BAEC6))),
+                      child: Text(" Log in",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                              color: Color(0xFF1BAEC6))),
                     ),
                   ],
                 ),
@@ -121,11 +149,19 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  Widget inputFile({required String label, bool obsecureText = false, required TextEditingController controller, String? Function(String?)? validator}) {
+  Widget inputFile(
+      {required String label,
+      bool obsecureText = false,
+      required TextEditingController controller,
+      String? Function(String?)? validator}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(label, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87)),
+        Text(label,
+            style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+                color: Colors.black87)),
         SizedBox(height: 5),
         TextFormField(
           controller: controller,
@@ -133,8 +169,10 @@ class _SignupPageState extends State<SignupPage> {
           validator: validator,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-            border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+            enabledBorder:
+                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+            border:
+                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
           ),
         ),
         SizedBox(height: 10),

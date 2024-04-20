@@ -27,8 +27,6 @@ Future<void> main() async {
 
   //firebase
 
-
-
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: welcomPage(),
@@ -45,12 +43,11 @@ Future<void> main() async {
       ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
     ),
-      routes: {
-    
-    '/login': (context) => loginPage(),
-    '/signup': (context) => SignupPage(),
-    // Define other routes here
-  },
+    routes: {
+      '/login': (context) => loginPage(),
+      '/signup': (context) => SignupPage(),
+      // Define other routes here
+    },
   ));
 }
 

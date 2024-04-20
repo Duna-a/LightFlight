@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Account.dart';
 import 'package:flutter_application_1/FlightBookingHomePage.dart';
@@ -14,20 +13,48 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'App',
-     home: ReviewScreen(),
+      home: ReviewScreen(),
     );
   }
 }
 
 class ReviewScreen extends StatelessWidget {
   final List<Review> reviews = [
-    Review(avatar: 'images/aa.jpg', name: 'Sara', reviewText: 'had a great experience!', rating: 4),
-    Review(avatar: 'images/bb.jpg', name: 'Ahmad', reviewText: "The best airline 💛", rating: 5),
-    Review(avatar: 'images/cc.jpg', name: 'Noura', reviewText: "Great staff and services !", rating: 4),
-    Review(avatar: 'images/dd.jpg', name: 'Abdullah', reviewText: "Everything was great 😍", rating: 5),
-    Review(avatar: 'images/aa.jpg', name: 'Sarah', reviewText: "The service was slow ", rating: 2),
-    Review(avatar: 'images/bb.jpg', name: 'Khaled', reviewText: 'had a great experience!', rating: 4),
-    Review(avatar: 'images/cc.jpg', name: 'Maha', reviewText: "Everything was great 😍", rating: 5),
+    Review(
+        avatar: 'images/aa.jpg',
+        name: 'Sara',
+        reviewText: 'had a great experience!',
+        rating: 4),
+    Review(
+        avatar: 'images/bb.jpg',
+        name: 'Ahmad',
+        reviewText: "The best airline 💛",
+        rating: 5),
+    Review(
+        avatar: 'images/cc.jpg',
+        name: 'Noura',
+        reviewText: "Great staff and services !",
+        rating: 4),
+    Review(
+        avatar: 'images/dd.jpg',
+        name: 'Abdullah',
+        reviewText: "Everything was great 😍",
+        rating: 5),
+    Review(
+        avatar: 'images/aa.jpg',
+        name: 'Sarah',
+        reviewText: "The service was slow ",
+        rating: 2),
+    Review(
+        avatar: 'images/bb.jpg',
+        name: 'Khaled',
+        reviewText: 'had a great experience!',
+        rating: 4),
+    Review(
+        avatar: 'images/cc.jpg',
+        name: 'Maha',
+        reviewText: "Everything was great 😍",
+        rating: 5),
   ];
 
   @override
@@ -60,7 +87,7 @@ class ReviewScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => FlightBookingHomePage(),
+                        builder: (context) => FlightBookingHomePage.noParams(),
                       ),
                     );
                   },
@@ -137,7 +164,11 @@ class Review {
   final int rating;
   final String avatar;
 
-  Review({required this.avatar, required this.name, required this.reviewText, required this.rating});
+  Review(
+      {required this.avatar,
+      required this.name,
+      required this.reviewText,
+      required this.rating});
 }
 
 class ReviewCard extends StatelessWidget {
@@ -173,5 +204,3 @@ class ReviewCard extends StatelessWidget {
     );
   }
 }
-
-

@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/FlightBookingHomePage.dart';
 import 'checboxstate.dart';
 import 'package:flutter_application_1/flight_data.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: FlightBookingSelectPage(),
-    );
-  }
-}
-
 class FlightBookingSelectPage extends StatefulWidget {
-  const FlightBookingSelectPage({Key? key}) : super(key: key);
+  final String email;
+  final String from;
+  final String to;
+  final String date;
+  final String flightClass;
+  final String departureTime;
+  final String arrivalTime;
+
+  const FlightBookingSelectPage({
+    Key? key,
+    required this.email,
+    required this.from,
+    required this.to,
+    required this.date,
+    required this.flightClass,
+    required this.departureTime,
+    required this.arrivalTime,
+  }) : super(key: key);
 
   @override
   _FlightBookingSelectPageState createState() =>
@@ -26,6 +30,15 @@ class FlightBookingSelectPage extends StatefulWidget {
 }
 
 class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
+  late String email;
+  late String from;
+  late String to;
+  late String date;
+  late String flightClass;
+  late String? airlineID;
+
+  int selectedSeatIndex = 0; // Index of the seat you want to display in blue
+
   var services = [
     checkboxState(
         title: 'Le Petit Chef',
@@ -74,6 +87,16 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
         title: 'Mémorial De Caen',
         Description: 'Webpage:https://www.memorial-caen.fr/'),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    email = widget.email;
+    from = widget.from;
+    to = widget.to;
+    date = widget.date;
+    flightClass = widget.flightClass;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -179,11 +202,11 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
                                 color: Colors.grey,
                               ),
                               borderRadius: BorderRadius.circular(4),
-                              color: item.seatType == SeatType.available
-                                  ? Colors.white
-                                  : item.seatType == SeatType.booked
-                                      ? Colors.blueGrey[50]
-                                      : Color.fromARGB(186, 53, 114, 255),
+                              color: index == selectedSeatIndex
+                                  ? Color.fromARGB(186, 53, 114, 255)
+                                  : index % 2 == 0
+                                      ? Colors.white
+                                      : Colors.blueGrey[50],
                             ),
                           ),
                         ),
@@ -201,7 +224,7 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => FlightBookingHomePage(),
+                    builder: (context) => FlightBookingHomePage.noParams(),
                   ),
                 );
               },
@@ -243,8 +266,7 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
                                     child: Column(
                                       children: services
                                           .map((checkbox) =>
-                                              buildingSingleCheckbox(
-                                                  checkbox,
+                                              buildingSingleCheckbox(checkbox,
                                                   setStateInsideDialog))
                                           .toList(),
                                     ),
@@ -253,8 +275,7 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
                                     child: Column(
                                       children: services2
                                           .map((checkbox) =>
-                                              buildingSingleCheckbox(
-                                                  checkbox,
+                                              buildingSingleCheckbox(checkbox,
                                                   setStateInsideDialog))
                                           .toList(),
                                     ),
@@ -263,8 +284,7 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
                                     child: Column(
                                       children: services3
                                           .map((checkbox) =>
-                                              buildingSingleCheckbox(
-                                                  checkbox,
+                                              buildingSingleCheckbox(checkbox,
                                                   setStateInsideDialog))
                                           .toList(),
                                     ),
@@ -278,9 +298,11 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
                           TextButton(
                             onPressed: () {
                               Navigator.pop(context);
+                              insertData();
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => FlightBookingHomePage(),
+                                  builder: (context) =>
+                                      FlightBookingHomePage.noParams(),
                                 ),
                               );
                             },
@@ -305,7 +327,6 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w600,
-                    // color: Theme.of(context).scaffoldBackgroundColor,
                   ),
                 ),
               ),
@@ -316,7 +337,9 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
     );
   }
 
-  Widget buildingSingleCheckbox(checkboxState checkbox, Function setStateInsideDialog) => CheckboxListTile(
+  Widget buildingSingleCheckbox(
+          checkboxState checkbox, Function setStateInsideDialog) =>
+      CheckboxListTile(
         title: Text(
           checkbox.title,
           style: Theme.of(context).textTheme.bodyMedium,
@@ -335,4 +358,62 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
         ),
         controlAffinity: ListTileControlAffinity.leading,
       );
+
+  void insertData() async {
+    final firestore = FirebaseFirestore.instance;
+
+    QuerySnapshot flightSnapshot = await firestore
+        .collection('AvaliableFlight')
+        .where('Departure', isEqualTo: widget.from)
+        .where('Destenation', isEqualTo: widget.to)
+        .where('DepartureDate', isEqualTo: widget.date)
+        .where('DepartureTime', isEqualTo: widget.departureTime)
+        .where('ArrivalTime', isEqualTo: widget.arrivalTime)
+        .get();
+
+    if (flightSnapshot.docs.isEmpty) {
+      print("No matching flight found");
+      return;
+    }
+
+    var matchingFlight = flightSnapshot.docs.first;
+    DocumentReference airlineRef = matchingFlight['AirlineID'];
+
+    QuerySnapshot classSnapshot = await firestore
+        .collection('Class')
+        .where('Type', isEqualTo: widget.flightClass)
+        .get();
+
+    if (classSnapshot.docs.isEmpty) {
+      print("No matching class found");
+      return;
+    }
+
+    var matchingClass = classSnapshot.docs.first;
+    DocumentReference classRef = matchingClass.reference;
+
+    List<String> defaultConciergeIDs = ['con1', 'con2', 'con3'];
+    DocumentReference seatRef =
+        firestore.collection('Seat').doc('S2'); // Default seatID
+
+    try {
+      await firestore.collection('Reservation').add({
+        'Email': '/User/${widget.email}',
+        'Email': firestore.doc('User/${widget.email}'),
+        'AirlineID': airlineRef,
+        'ClassID': classRef,
+        'SeatID': seatRef,
+        'ConciergeID': defaultConciergeIDs
+            .map(
+                (conciergeID) => firestore.doc('ConciergeService/$conciergeID'))
+            .toList(),
+      });
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Booking added successfully!')));
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Failed to add booking: $e')));
+    }
+  }
 }

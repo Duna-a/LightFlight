@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/FlightBookingSelectPage.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: FlightSearch(),
-    );
-  }
-}
-
 class FlightSearch extends StatelessWidget {
-  const FlightSearch({Key? key}) : super(key: key);
+  final String from;
+  final String to;
+  final String date;
+  final String flightClass;
+  final String email;
+
+  const FlightSearch({
+    Key? key,
+    required this.from,
+    required this.to,
+    required this.date,
+    required this.flightClass,
+    required this.email,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,75 +31,146 @@ class FlightSearch extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Color(0xFF1BAEC6),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('AvaliableFlight')
+            .where('Departure', isEqualTo: from)
+            .where('Destenation', isEqualTo: to)
+            .where('DepartureDate', isEqualTo: date)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(
+              child: Text('No flights available'),
+            );
+          }
+          final flights = snapshot.data!.docs;
+          return Expanded(
+            child: ListView.builder(
+              itemCount: flights.length,
+              itemBuilder: (context, index) {
+                final flightData =
+                    flights[index].data() as Map<String, dynamic>;
+                return buildFlightCard(
+                  context,
+                  flightData['Departure'],
+                  flightData['Destenation'],
+                  flightData['DepartureTime'],
+                  flightData['ArrivalTime'],
+                  flightData['Price'].toString(),
+                  flightData['AirlineID'],
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget buildFlightCard(
+    BuildContext context,
+    String departure,
+    String destination,
+    String departureTime,
+    String arrivalTime,
+    String price,
+    DocumentReference airlineRef,
+  ) {
+    return Card(
+      margin: EdgeInsets.all(8.0),
+      child: ListTile(
+        contentPadding: EdgeInsets.all(16.0),
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Color(0xFF1BAEC6),
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 0.5,
-                        ),
+                  Text(departure),
+                  Text(departureTime),
+                  Text('\$$price'),
+                ],
+              ),
+            ),
+            FutureBuilder<DocumentSnapshot>(
+              future: airlineRef.get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                }
+                if (snapshot.hasError ||
+                    !snapshot.hasData ||
+                    !snapshot.data!.exists) {
+                  return Icon(Icons.error);
+                }
+                final airlineData =
+                    snapshot.data!.data() as Map<String, dynamic>;
+                final logo = airlineData['logo'];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Updated padding
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'images/$logo',
+                        width: 55,
+                        height: 55,
                       ),
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'All',
-                          style: TextStyle(
-                            color: Colors.black,
+                      Icon(Icons.flight),
+                    ],
+                  ),
+                );
+              },
+            ),
+            SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(destination),
+                  Text(arrivalTime),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FlightBookingSelectPage(
+                            from: from,
+                            to: to,
+                            date: date,
+                            flightClass: flightClass,
+                            email: email,
+                            departureTime: departureTime,
+                            arrivalTime: arrivalTime,
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
+                      );
+                    },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 221, 221, 221),
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 0.5,
-                        ),
+                        color: Colors.blue[100],
+                        borderRadius: BorderRadius.circular(4),
                       ),
-                      child: TextButton(
-                        onPressed: () {},
+                      width: 70,
+                      height: 40,
+                      child: const Center(
                         child: Text(
-                          'Price',
+                          "Select",
                           style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 221, 221, 221),
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 0.5,
-                        ),
-                      ),
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Recommended',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12.2,
+                            color: Color(0xFF1BAEC6),
                           ),
                         ),
                       ),
@@ -108,146 +179,8 @@ class FlightSearch extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildFlightCard(
-                  context,
-                  "KW",
-                  "Kuwait",
-                  "12 : 20",
-                  "EG",
-                  "Egypt",
-                  "14 : 15",
-                  "\$ 34.92",
-                ),
-                buildFlightCard(
-                  context,
-                  "KW",
-                  "Kuwait",
-                  "1 : 20",
-                  "EG",
-                  "Egypt",
-                  "3 : 15",
-                  "\$ 55.92",
-                ),
-                buildFlightCard(
-                  context,
-                  "KW",
-                  "Kuwait",
-                  "8 : 20",
-                  "EG",
-                  "Egypt",
-                  "10 : 15",
-                  "\$ 46.92",
-                ),
-              ],
-            ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget buildFlightCard(
-    BuildContext context,
-    String departureCode,
-    String departureName,
-    String departureTime,
-    String destinationCode,
-    String destinationName,
-    String arrivalTime,
-    String price,
-  ) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey[300]!,
-        ),
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Image.asset(
-            'images/flynas.png',
-            height: 42,
-            width: 100,
-            fit: BoxFit.cover,
-          ),
-          Container(
-            height: 84,
-            margin: const EdgeInsets.symmetric(vertical: 8),
-            child: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(departureCode),
-                    Text(departureName),
-                    Text(departureTime),
-                  ],
-                ),
-                Expanded(
-                  child: Icon(
-                    Icons.flight,
-                    size: 35,
-                    color: Color(0xFF096499),
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(destinationCode),
-                    Text(destinationName),
-                    Text(arrivalTime),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Row(
-            children: [
-              Text(
-                price,
-              ),
-              Spacer(),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FlightBookingSelectPage(),
-                    ),
-                  );
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue[100],
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 4,
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Select",
-                      style: TextStyle(
-                        color: Color(0xFF1BAEC6),
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          )
-        ],
       ),
     );
   }

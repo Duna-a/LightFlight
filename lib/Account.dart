@@ -245,7 +245,7 @@ class Account extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => FlightBookingHomePage(),
+                        builder: (context) => FlightBookingHomePage.noParams(),
                       ),
                     );
                   },
