@@ -400,10 +400,10 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
       await firestore.collection('Reservation').add({
         'Email': '/User/${widget.email}',
         'Email': firestore.doc('User/${widget.email}'),
-        'AirlineID': airlineRef,
-        'ClassID': classRef,
-        'SeatID': seatRef,
-        'ConciergeID': defaultConciergeIDs
+        'airlineID': airlineRef,
+        'classID': classRef,
+        'seatID': seatRef,
+        'conciergeID': defaultConciergeIDs
             .map(
                 (conciergeID) => firestore.doc('ConciergeService/$conciergeID'))
             .toList(),
