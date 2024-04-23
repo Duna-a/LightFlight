@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'Account.dart';
-import 'recommendations.dart';
-import 'FlightBookingHomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_application_1/Account.dart';
+import 'package:flutter_application_1/FlightBookingHomePage.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,9 +25,11 @@ class MyFlight extends StatefulWidget {
 }
 
 class _ExpansionListState extends State<MyFlight> {
+  List<Item> _data = [];
+  List<Item> _filteredData = [];
   String myEmail = '';
-  late List<Item> _data;
   bool _isLoading = true;
+  TextEditingController _searchController = TextEditingController();
 
   TextEditingController departure = new TextEditingController();
   TextEditingController destination = new TextEditingController();
@@ -45,11 +45,6 @@ class _ExpansionListState extends State<MyFlight> {
     'Business',
     'Premium Economy'
   ];
-  Future<void> fetchAndStoreFlights() async {
-    departureAndDestinations = await getFlightArray();
-  }
-
-  String? ChoosedClass;
   String? ChoosedFlight;
 
   @override
@@ -60,65 +55,47 @@ class _ExpansionListState extends State<MyFlight> {
   }
 
   _fetch() async {
-    //wait for user to sign/log in
     final user = await FirebaseAuth.instance.currentUser;
-    //if the user signed/logged in
     if (user != null) {
-      //get the id of the current user
       final userDoc = await FirebaseFirestore.instance
           .collection('User')
           .doc(user.uid)
           .get();
-      //get email data of the user with this id
       myEmail = userDoc.data()?['Email'] ?? '';
-      print(myEmail);
-      //search in reservations for a user with this email -fk-
       final reservationsSnapshot = await FirebaseFirestore.instance
           .collection('Reservation')
           .where('Email',
               isEqualTo: FirebaseFirestore.instance.doc('User/$myEmail'))
           .get();
-      List<Item> items = []; // List to store Item objects
+      List<Item> items = [];
       for (var reservationDoc in reservationsSnapshot.docs) {
-        print('Reservation ID: ${reservationDoc.id}');
-        print('Reservation Data: ${reservationDoc.data()}');
-        //get the airline id 'fk'
         final airlineRef = reservationDoc.data()?['airlineID'];
         final airlineID = airlineRef != null ? airlineRef.id : '';
-        //search for the airline with this id
         final airlineDoc = await FirebaseFirestore.instance
             .collection('Airline')
             .doc(airlineID)
             .get();
-        print('Available airline info: ${airlineDoc.data()}');
         if (airlineDoc.exists) {
-          //get available flight id
           final availableFlightRef = airlineDoc.data()?['AvaliableFlightID'];
           final availableFlightID =
               availableFlightRef != null ? availableFlightRef.id : '';
-          //search for the available flight with this id
           final availableFlightDoc = await FirebaseFirestore.instance
               .collection('AvaliableFlight')
               .doc(availableFlightID)
               .get();
           if (availableFlightDoc.exists) {
-            print('Available Flight info: ${availableFlightDoc.data()}');
-
             final classRef = reservationDoc.data()?['classID'];
             final classId = classRef != null ? classRef.id : '';
             final classDoc = await FirebaseFirestore.instance
                 .collection('Class')
                 .doc(classId)
                 .get();
-            print('class info: ${classDoc.data()}');
-
             final seatRef = reservationDoc.data()?['seatID'];
             final seatId = seatRef != null ? seatRef.id : '';
             final seatDoc = await FirebaseFirestore.instance
                 .collection('Seat')
                 .doc(seatId)
                 .get();
-            print('seat info: ${seatDoc.data()}');
 
             List<String> timeSplit =
                 availableFlightDoc.data()?['DepartureTime'].split(':');
@@ -158,6 +135,7 @@ class _ExpansionListState extends State<MyFlight> {
       }
       setState(() {
         _data = items;
+        _filteredData = items;
         _isLoading = false;
       });
     }
@@ -187,136 +165,205 @@ class _ExpansionListState extends State<MyFlight> {
           backgroundColor: Color(0xFF1BAEC6),
           centerTitle: true,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: _data.map<Widget>((Item item) {
-              return ExpansionTile(
-                title: ListTile(
-                  leading: Image.asset(item.logo),
-                  title: Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("From:",
-                              style: Theme.of(context).textTheme.bodyLarge),
-                          Text(item.departure,
-                              style: Theme.of(context).textTheme.bodyMedium),
-                        ],
-                      ),
-                      SizedBox(width: 100),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("To:",
-                                style: Theme.of(context).textTheme.bodyLarge),
-                            Text(item.destination,
-                                style: Theme.of(context).textTheme.bodyMedium),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                children: [
-                  ListTile(
-                    leading: GestureDetector(
-                      onTap: () {
-                        EditFlightDetail(item);
-                      },
-                      child: Icon(Icons.edit),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Departure Date:",
-                            style: Theme.of(context).textTheme.bodyMedium),
-                        Text(item.departureDate,
-                            style: Theme.of(context).textTheme.bodySmall),
-                        Text("Departure time:",
-                            style: Theme.of(context).textTheme.bodyMedium),
-                        Text(item.departureTime,
-                            style: Theme.of(context).textTheme.bodySmall),
-                        Text("Arrival time:",
-                            style: Theme.of(context).textTheme.bodyMedium),
-                        Text(item.arrivalTime,
-                            style: Theme.of(context).textTheme.bodySmall),
-                        Text("Booking Class:",
-                            style: Theme.of(context).textTheme.bodyMedium),
-                        Text(item.bookingClass,
-                            style: Theme.of(context).textTheme.bodySmall),
-                        Text("Seat number:",
-                            style: Theme.of(context).textTheme.bodyMedium),
-                        Text(item.seatNum,
-                            style: Theme.of(context).textTheme.bodySmall),
-                        Text("Concierge Services:",
-                            style: Theme.of(context).textTheme.bodyMedium),
-                        Text("Restaurant:",
-                            style: Theme.of(context).textTheme.bodyMedium),
-                        Text("Pink Mamma",
-                            style: Theme.of(context).textTheme.bodySmall),
-                        Text("Car Rental:",
-                            style: Theme.of(context).textTheme.bodyMedium),
-                        Text("rentalCars",
-                            style: Theme.of(context).textTheme.bodySmall),
-                        Text("Tourist Spot:",
-                            style: Theme.of(context).textTheme.bodyMedium),
-                        Text("Palace of Versailles",
-                            style: Theme.of(context).textTheme.bodySmall),
-                      ],
-                    ),
-                    trailing: IconButton(
-                      onPressed: () {
-                        // Show dialog to confirm deletion
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text("Confirm Delete"),
-                              content: Text(
-                                  "Are you sure you want to delete this item?"),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: Text("Cancel"),
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pop(); // Dismiss the dialog
-                                  },
+        body: Column(
+          children: [
+            TextField(
+              onChanged: (value) {
+                setState(() {
+                  _filteredData = _data
+                      .where((item) => item.destination
+                          .toLowerCase()
+                          .contains(value.toLowerCase()))
+                      .toList();
+                });
+              },
+              decoration: InputDecoration(
+                labelText: 'Search by Destination',
+                prefixIcon: Icon(Icons.search),
+              ),
+            ),
+            SingleChildScrollView(
+              child: _filteredData.isNotEmpty
+                  ? Column(
+                      children: _filteredData.map<Widget>((Item item) {
+                        return ExpansionTile(
+                          title: ListTile(
+                            leading: Image.asset(item.logo),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'From: ${item.departure}',
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
-                                TextButton(
-                                  child: Text("Delete"),
-                                  onPressed: () async {
-                                    // Delete the document from Firestore
-                                    await FirebaseFirestore.instance
-                                        .collection('Reservation')
-                                        .doc(item.reservationID)
-                                        .delete();
-
-                                    // Use setState to remove the item from the local list and refresh the UI
-                                    setState(() {
-                                      _data.removeWhere((currentItem) =>
-                                          currentItem.reservationID ==
-                                          item.reservationID);
-                                    });
-
-                                    Navigator.of(context)
-                                        .pop(); // Dismiss the dialog
-                                  },
+                                Text(
+                                  'To: ${item.destination}',
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ],
-                            );
-                          },
+                            ),
+                          ),
+                          children: [
+                            ListTile(
+                              leading: GestureDetector(
+                                onTap: () {
+                                  EditFlightDetail(item);
+                                },
+                                child: Icon(Icons.edit),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Departure Date:",
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    item.departureDate,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  Text(
+                                    "Departure time:",
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    item.departureTime,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  Text(
+                                    "Arrival time:",
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    item.arrivalTime,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  Text(
+                                    "Booking Class:",
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    item.bookingClass,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  Text(
+                                    "Seat number:",
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    item.seatNum,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  Text(
+                                    "Concierge Services:",
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    "Restaurant:",
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    "Pink Mamma",
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  Text(
+                                    "Car Rental:",
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    "rentalCars",
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  Text(
+                                    "Tourist Spot:",
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    "Palace of Versailles",
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                ],
+                              ),
+                              trailing: IconButton(
+                                onPressed: () {
+                                  // Show dialog to confirm deletion
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text("Confirm Delete"),
+                                        content: Text(
+                                          "Are you sure you want to delete this item?",
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text("Cancel"),
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pop(); // Dismiss the dialog
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text("Delete"),
+                                            onPressed: () async {
+                                              // Delete the document from Firestore
+                                              await FirebaseFirestore.instance
+                                                  .collection('Reservation')
+                                                  .doc(item.reservationID)
+                                                  .delete();
+
+                                              // Use setState to remove the item from the local list and refresh the UI
+                                              setState(() {
+                                                _data.removeWhere(
+                                                    (currentItem) =>
+                                                        currentItem
+                                                            .reservationID ==
+                                                        item.reservationID);
+                                              });
+
+                                              Navigator.of(context)
+                                                  .pop(); // Dismiss the dialog
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                icon: Icon(Icons.delete),
+                              ),
+                            ),
+                          ],
+                          initiallyExpanded: item.isExpanded,
                         );
-                      },
-                      icon: Icon(Icons.delete),
+                      }).toList(),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'No matching reservations found',
+                        style: TextStyle(fontSize: 18),
+                      ),
                     ),
-                  ),
-                ],
-                initiallyExpanded: item.isExpanded,
-              );
-            }).toList(),
-          ),
+            ),
+          ],
         ),
         bottomNavigationBar: BottomAppBar(
           child: Container(
@@ -359,7 +406,7 @@ class _ExpansionListState extends State<MyFlight> {
                     },
                     child: Icon(
                       Icons.airplane_ticket,
-                      color: Color(0xFF096499),
+                      color: Colors.grey,
                     ),
                   ),
                 ),
@@ -368,13 +415,13 @@ class _ExpansionListState extends State<MyFlight> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => ReviewScreen(),
+                          builder: (context) => MyApp(),
                         ),
                       );
                     },
                     child: Icon(
                       Icons.star,
-                      color: Colors.grey,
+                      color: Color(0xFF096499),
                     ),
                   ),
                 ),
@@ -399,6 +446,27 @@ class _ExpansionListState extends State<MyFlight> {
         ),
       );
     }
+  }
+
+  Future<void> fetchAndStoreFlights() async {
+    departureAndDestinations = await getFlightArray();
+  }
+
+  Future<List<String>> getFlightArray() async {
+    List<String> DepartureToDestination = [];
+
+    final availableFlightDoc =
+        await FirebaseFirestore.instance.collection('AvaliableFlight');
+
+    QuerySnapshot flights = await availableFlightDoc.get();
+    for (var availableFlight in flights.docs) {
+      Map<String, dynamic> flightData =
+          availableFlight.data() as Map<String, dynamic>;
+      String departure = flightData?['Departure'] ?? '';
+      String destination = flightData?['Destenation'] ?? '';
+      DepartureToDestination.add('From:$departure To:$destination');
+    }
+    return DepartureToDestination;
   }
 
   Future<void> EditFlightDetail(Item item) async {
@@ -671,7 +739,6 @@ class _ExpansionListState extends State<MyFlight> {
             item.arrivalTime = newFlightData['ArrivalTime'];
             item.departureTime = newFlightData['DepartureTime'];
             item.departureDate = newFlightData['DepartureDate'];
-
             ChoosedFlight = 'From:${departure} To:${destination}';
           });
         }
