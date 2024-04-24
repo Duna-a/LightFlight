@@ -27,7 +27,6 @@ class MyFlight extends StatefulWidget {
 }
 
 class _ExpansionListState extends State<MyFlight> {
-  
   String myEmail = '';
   late List<Item> _data;
   bool _isLoading = true;
@@ -188,7 +187,6 @@ class _ExpansionListState extends State<MyFlight> {
           backgroundColor: Color(0xFF1BAEC6),
           centerTitle: true,
         ),
-        
         body: SingleChildScrollView(
           child: Column(
             children: _data.map<Widget>((Item item) {
@@ -755,6 +753,6 @@ class Item {
     required this.bookingClass,
     required this.timeOfDayDeparure,
     required this.timeOfDayArrival,
-    this.isExpanded = false,
-  });
+    this.isExpanded = false,
+  });
 }
