@@ -393,7 +393,7 @@ class _FlightBookingSelectPageState extends State<FlightBookingSelectPage> {
     DocumentReference classRef = matchingClass.reference;
 
     List<String> defaultConciergeIDs = ['con1', 'con2', 'con3'];
-    DocumentReference seatRef = firestore.collection('Seat').doc('S02');
+    DocumentReference seatRef = firestore.collection('Seat').doc('S2');
 
     try {
       await firestore.collection('Reservation').add({
